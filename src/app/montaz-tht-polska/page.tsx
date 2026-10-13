@@ -3,7 +3,7 @@ import ServiceLandingPage from "../components/SeoPages/ServiceLandingPage";
 import { absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Montaż THT w Polsce | Producenci elektroniki | PolskiEMS",
+  title: "Montaż THT w Polsce – producenci elektroniki",
   description:
     "Szukasz montażu THT w Polsce? Sprawdź producentów EMS, porównaj kompetencje technologiczne i wybierz partnera do projektów wymagających trwałych połączeń.",
   alternates: {
