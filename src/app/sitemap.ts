@@ -1,134 +1,66 @@
 import type { MetadataRoute } from "next";
+import { eq } from "drizzle-orm";
+import { producenci } from "@/db/schema";
+import { getDb } from "@/lib/db";
+import { companyProfileSlug } from "@/lib/companySlug";
+import { SITE_URL } from "@/lib/site";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://polskiems.pl";
+const staticRoutes: Array<{
+  path: string;
+  changeFrequency: NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
+  priority: number;
+}> = [
+  { path: "", changeFrequency: "weekly", priority: 1 },
+  { path: "/wyszukaj", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/wszyscy-producenci", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/produkcja-pcb-polska", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/montaz-smt-polska", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/montaz-tht-polska", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/ems-polska", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/montaz-elektroniki-w-polsce", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/kontraktowy-montaz-elektroniki", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/jak-wybrac-firme-ems", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/produkcja-prototypowa-elektroniki", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/ems-mazowieckie", changeFrequency: "weekly", priority: 0.7 },
+  { path: "/ems-pomorskie", changeFrequency: "weekly", priority: 0.7 },
+  { path: "/ems-slaskie", changeFrequency: "weekly", priority: 0.7 },
+  { path: "/ems-dolnoslaskie", changeFrequency: "weekly", priority: 0.7 },
+  { path: "/ems-wielkopolskie", changeFrequency: "weekly", priority: 0.7 },
+  { path: "/kontakt", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/o-nas", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/regulamin", changeFrequency: "monthly", priority: 0.4 },
+  { path: "/cennik", changeFrequency: "monthly", priority: 0.5 },
+  { path: "/aktywacja_pakietu", changeFrequency: "monthly", priority: 0.5 },
+];
 
-  return [
-    {
-      url: `${baseUrl}`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/wyszukaj`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/wszyscy-producenci`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/produkcja-pcb-polska`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/montaz-smt-polska`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/montaz-tht-polska`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/ems-polska`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/montaz-elektroniki-w-polsce`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/kontraktowy-montaz-elektroniki`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/jak-wybrac-firme-ems`,
-      lastModified: new Date(),
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const staticEntries: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
+    url: `${SITE_URL}${route.path}`,
+    changeFrequency: route.changeFrequency,
+    priority: route.priority,
+  }));
+
+  try {
+    const db = getDb();
+    const companies = await db
+      .select({
+        id: producenci.id,
+        nazwa: producenci.nazwa,
+        createdAt: producenci.createdAt,
+      })
+      .from(producenci)
+      .where(eq(producenci.isActive, true));
+
+    const companyEntries: MetadataRoute.Sitemap = companies.map((company) => ({
+      url: `${SITE_URL}/producenci/${companyProfileSlug(company.nazwa, company.id)}`,
+      lastModified: company.createdAt ?? undefined,
       changeFrequency: "monthly",
       priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/produkcja-prototypowa-elektroniki`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/ems-mazowieckie`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/ems-pomorskie`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/ems-slaskie`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/ems-dolnoslaskie`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/ems-wielkopolskie`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/kontakt`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/o-nas`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/regulamin`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.4,
-    },
-    {
-      url: `${baseUrl}/cennik`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/aktywacja_pakietu`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-  ];
+    }));
+
+    return [...staticEntries, ...companyEntries];
+  } catch (error) {
+    console.error("Failed to load producer profiles for sitemap", error);
+    return staticEntries;
+  }
 }
