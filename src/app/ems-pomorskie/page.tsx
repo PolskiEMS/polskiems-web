@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "../seo-page.module.css";
+import { absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "EMS pomorskie | Firmy montażu elektroniki | PolskiEMS",
+  title: "Firmy EMS w województwie pomorskim",
   description: "Znajdź producentów EMS w województwie pomorskim. Porównaj firmy oferujące montaż elektroniki, prototypy i produkcję seryjną.",
+  alternates: { canonical: absoluteUrl("/ems-pomorskie") },
 };
 
 export default function Page() {
