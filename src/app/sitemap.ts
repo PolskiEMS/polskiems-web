@@ -5,6 +5,8 @@ import { getDb } from "@/lib/db";
 import { companyProfileSlug } from "@/lib/companySlug";
 import { SITE_URL } from "@/lib/site";
 
+export const dynamic = "force-dynamic";
+
 const staticRoutes: Array<{
   path: string;
   changeFrequency: NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
