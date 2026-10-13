@@ -3,8 +3,16 @@ import Link from "next/link";
 import PageViewTracker from "@/app/components/PageViewTracker";
 import { getFeaturedProducers } from "@/lib/actions";
 import ProducerCard from "@/app/components/ProducerCard/ProducerCard";
+import { unstable_cache } from "next/cache";
+import { SITE_URL, absoluteUrl, serializeJsonLd } from "@/lib/site";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 900;
+
+const getCachedFeaturedProducers = unstable_cache(
+  () => getFeaturedProducers(3),
+  ["home-featured-producers"],
+  { revalidate: 900 }
+);
 
 const valuePropositions = [
   {
@@ -60,13 +68,48 @@ export default async function Home() {
   let featuredProducers: Awaited<ReturnType<typeof getFeaturedProducers>> = [];
 
   try {
-    featuredProducers = await getFeaturedProducers(3);
+    featuredProducers = await getCachedFeaturedProducers();
   } catch (error) {
     console.error("Failed to load featured producers", error);
   }
 
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "PolskiEMS",
+    url: SITE_URL,
+    logo: absoluteUrl("/images/logo.png"),
+    email: "info@polskiems.pl",
+    description:
+      "Polska platforma B2B pomagająca znaleźć firmy EMS i producentów elektroniki według usług, lokalizacji i kompetencji.",
+  };
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "PolskiEMS",
+    url: SITE_URL,
+    inLanguage: "pl-PL",
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqItems.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+
   return (
     <main className={styles.page}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(organizationSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(websiteSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqSchema) }} />
       <PageViewTracker page="home" />
 
       <section className={styles.hero}>
