@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 export default function MontazthtpolskaPage() {
   return (
     <ServiceLandingPage
+      breadcrumbPath="/montaz-tht-polska"
       title="Montaż THT w Polsce"
       lead="Montaż przewlekany THT jest wybierany tam, gdzie liczy się wytrzymałość mechaniczna, stabilność połączeń i niezawodność pracy urządzenia w wymagających warunkach. Na tej stronie porównasz firmy EMS oferujące montaż THT, wsparcie jakościowe oraz obsługę projektów od prototypu po produkcję seryjną."
       searchHref="/producenci?requirements=Monta%C5%BC%20THT"
