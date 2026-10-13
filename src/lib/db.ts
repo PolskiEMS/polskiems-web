@@ -20,7 +20,7 @@ export function getDb() {
       max_lifetime: 300,
       connection: {
         application_name: "polskiems-vercel",
-        statement_timeout: "15000",
+        statement_timeout: 15000,
       },
     });
 
