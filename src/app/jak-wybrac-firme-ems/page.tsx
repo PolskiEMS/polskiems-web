@@ -13,5 +13,5 @@ export const metadata: Metadata = {
 };
 
 export default function JakWybracFirmeEmsPage() {
-  return <SeoPageTemplateB data={pageData} />;
+  return <SeoPageTemplateB data={pageData} breadcrumbPath="/jak-wybrac-firme-ems" />;
 }
