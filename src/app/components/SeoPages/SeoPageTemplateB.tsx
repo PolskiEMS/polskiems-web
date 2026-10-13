@@ -1,14 +1,23 @@
 import Link from "next/link";
 import styles from "./seo-pages.module.css";
 import type { SeoPageData } from "./types";
+import BreadcrumbJsonLd from "./BreadcrumbJsonLd";
 
 type Props = {
   data: SeoPageData;
+  breadcrumbPath: string;
 };
 
-export default function SeoPageTemplateB({ data }: Props) {
+export default function SeoPageTemplateB({ data, breadcrumbPath }: Props) {
   return (
     <main className={styles.page}>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "PolskiEMS", path: "/" },
+          { name: "Wiedza EMS", path: "/ems-polska" },
+          { name: data.title, path: breadcrumbPath },
+        ]}
+      />
       <section className={styles.hero}>
         <div className={styles.heroInner}>
           <p className={styles.kicker}>Wiedza EMS</p>
