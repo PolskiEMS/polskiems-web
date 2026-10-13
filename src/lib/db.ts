@@ -14,10 +14,14 @@ export function getDb() {
     const client = postgres(url, {
       prepare: false,
       ssl: "require",
-      max: 3,
-      idle_timeout: 10,
+      max: 1,
+      idle_timeout: 5,
       connect_timeout: 5,
       max_lifetime: 300,
+      connection: {
+        application_name: "polskiems-vercel",
+        statement_timeout: "15000",
+      },
     });
 
     _db = drizzle(client);
