@@ -3,7 +3,7 @@ import ServiceLandingPage from "../components/SeoPages/ServiceLandingPage";
 import { absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Produkcja PCB w Polsce | Producenci EMS | PolskiEMS",
+  title: "Produkcja PCB w Polsce – producenci",
   description:
     "Porównaj firmy oferujące produkcję PCB w Polsce. Sprawdź dostawców EMS, ich możliwości technologiczne i wybierz partnera do prototypów lub serii.",
   alternates: {
