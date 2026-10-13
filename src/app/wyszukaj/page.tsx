@@ -3,32 +3,25 @@ import ProducerSearch from "../components/ProducerSearch/ProducerSearch";
 import PageViewTracker from "../components/PageViewTracker";
 import { getPublicSupplierSearchOptions } from "@/lib/publicSupplierTaxonomyActions";
 import styles from "./styles.module.css";
+import { absoluteUrl } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
 
 export const metadata: Metadata = {
-  title: "Wyszukaj producenta elektroniki w Polsce | Filtry EMS | PolskiEMS",
+  title: "Wyszukaj producenta elektroniki w Polsce",
   description:
     "Wybierz usługi, możliwości technologiczne, branże, certyfikaty, typ firmy, lokalizację i skalę produkcji, aby znaleźć producenta elektroniki w Polsce.",
-  keywords: [
-    "wyszukiwarka producentów elektroniki",
-    "EMS wyszukiwanie",
-    "produkcja elektroniki Polska",
-    "filtruj producentów PCB",
-    "certyfikaty EMS",
-    "możliwości technologiczne EMS",
-  ],
   openGraph: {
     title: "Wyszukiwarka Producentów Elektroniki",
     description: "Znajdź producenta elektroniki według usług, możliwości, branż, certyfikatów, lokalizacji i skali produkcji.",
-    url: "https://polskiems.pl/wyszukaj",
+    url: absoluteUrl("/wyszukaj"),
     siteName: "Wyszukiwarka Producentów",
     locale: "pl_PL",
     type: "website",
   },
   alternates: {
-    canonical: "https://polskiems.pl/wyszukaj",
+    canonical: absoluteUrl("/wyszukaj"),
   },
 };
 
