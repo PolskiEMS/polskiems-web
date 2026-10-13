@@ -7,7 +7,7 @@ import PageViewTracker from '../components/PageViewTracker';
 import { absoluteUrl } from "@/lib/site";
 import { unstable_cache } from "next/cache";
 
-export const revalidate = 900;
+export const dynamic = "force-dynamic";
 
 const getCachedAllProducers = unstable_cache(
   () => getAllProducers(),
