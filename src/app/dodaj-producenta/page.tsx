@@ -15,7 +15,7 @@ const getCachedSignupOptions = unstable_cache(
 );
 
 export const metadata: Metadata = {
-  title: "Dodaj firmę do katalogu | PolskiEMS",
+  title: "Dodaj firmę do katalogu",
   description:
     "Zgłoś firmę do katalogu PolskiEMS. Uzupełnij dane, typ firmy, usługi, możliwości technologiczne, branże, certyfikaty i skalę produkcji.",
   alternates: {
