@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { getAllProducers } from '../../lib/actions';
 import styles from './styles.module.css'
 import AllProducers from '../components/AllProducers/AllProducers';
@@ -7,6 +5,15 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import PageViewTracker from '../components/PageViewTracker';
 import { absoluteUrl } from "@/lib/site";
+import { unstable_cache } from "next/cache";
+
+export const revalidate = 900;
+
+const getCachedAllProducers = unstable_cache(
+  () => getAllProducers(),
+  ["all-public-producers"],
+  { revalidate: 900 }
+);
 
 export const metadata: Metadata = {
   title: "Wszyscy producenci elektroniki w Polsce | Baza firm EMS | PolskiEMS",
@@ -29,7 +36,7 @@ const WszyscyProducenci = async () => {
   let producers: Awaited<ReturnType<typeof getAllProducers>> = [];
   let databaseUnavailable = false;
   try {
-    producers = await getAllProducers();
+    producers = await getCachedAllProducers();
   } catch {
     databaseUnavailable = true;
     console.error("All producers query failed");
