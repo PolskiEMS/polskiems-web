@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import styles from './styles.module.css'
 import Link from "next/link";
 import PageViewTracker from "@/app/components/PageViewTracker";
@@ -7,6 +8,22 @@ import { unstable_cache } from "next/cache";
 import { SITE_URL, absoluteUrl, serializeJsonLd } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Firmy EMS i producenci elektroniki w Polsce",
+  description:
+    "Znajdź firmy EMS i producentów elektroniki w Polsce. Porównaj montaż SMT, THT, PCB, lokalizację, skalę produkcji i kompetencje firm.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Firmy EMS i producenci elektroniki w Polsce | PolskiEMS",
+    description:
+      "Znajdź partnera do produkcji elektroniki w Polsce i porównaj firmy EMS według usług, lokalizacji oraz możliwości produkcyjnych.",
+    url: "/",
+    type: "website",
+  },
+};
 
 const getCachedFeaturedProducers = unstable_cache(
   () => getFeaturedProducers(3),
