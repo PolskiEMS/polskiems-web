@@ -32,18 +32,15 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "PolskiEMS: firmy EMS i producenci elektroniki",
+    default: "PolskiEMS – firmy EMS i producenci elektroniki",
     template: "%s | PolskiEMS",
   },
   description:
-    "Znajdź producentów elektroniki, firmy EMS, montaż SMD, THT, PCB i kontraktową produkcję elektroniki w Polsce.",
-  alternates: {
-    canonical: SITE_URL,
-  },
+    "Znajdź producentów elektroniki i firmy EMS w Polsce. Porównaj montaż SMT, THT, PCB, lokalizację, skalę produkcji i kompetencje firm.",
   openGraph: {
-    title: "PolskiEMS: firmy EMS i producenci elektroniki",
+    title: "PolskiEMS – firmy EMS i producenci elektroniki",
     description:
-      "Znajdź idealnego partnera do produkcji elektroniki w Polsce. Intuicyjna wyszukiwarka producentów PCB i EMS.",
+      "Znajdź partnera do produkcji elektroniki w Polsce i porównaj firmy EMS według usług, lokalizacji i możliwości produkcyjnych.",
     url: SITE_URL,
     siteName: "PolskiEMS",
     images: [
@@ -51,7 +48,7 @@ export const metadata: Metadata = {
         url: "/images/logo.png",
         width: 1200,
         height: 630,
-        alt: "Wyszukiwarka Producentów Elektroniki",
+        alt: "PolskiEMS – firmy EMS i producenci elektroniki",
       },
     ],
     locale: "pl_PL",
@@ -59,8 +56,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "PolskiEMS | Wyszukiwarka producentów elektroniki",
-    description: "Znajdź firmę EMS lub producenta elektroniki w Polsce według usług, województwa i skali produkcji",
+    title: "PolskiEMS – firmy EMS i producenci elektroniki",
+    description:
+      "Znajdź firmę EMS lub producenta elektroniki w Polsce według usług, województwa i skali produkcji.",
     images: ["/images/logo.png"],
   },
 };
