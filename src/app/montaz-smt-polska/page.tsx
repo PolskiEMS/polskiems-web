@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 export default function MontazsmtpolskaPage() {
   return (
     <ServiceLandingPage
+      breadcrumbPath="/montaz-smt-polska"
       title="Montaż SMT w Polsce"
       lead="Montaż SMT to fundament nowoczesnej produkcji elektroniki i jedna z najczęściej wybieranych technologii dla komponentów SMD. Dzięki katalogowi PolskiEMS możesz szybko porównać firmy, które realizują montaż SMT dla prototypów, krótkich serii i produkcji wolumenowej."
       searchHref="/producenci?requirements=Monta%C5%BC%20SMT"
