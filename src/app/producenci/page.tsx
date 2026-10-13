@@ -2,31 +2,22 @@ import { Metadata } from 'next';
 import FoundProducers from '../components/FoundProducers/FoundProducers';
 import styles from './styles.module.css'
 import Link from 'next/link';
+import { absoluteUrl } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Firmy EMS i producenci elektroniki w Polsce – wyniki wyszukiwania",
+  title: "Firmy EMS i producenci elektroniki w Polsce",
   description:
     "Sprawdź dopasowane firmy EMS i producentów elektroniki w Polsce. Porównaj usługi montażu SMD, THT, PCB, lokalizację oraz skalę produkcji.",
-  keywords: [
-    "firmy EMS",
-    "producenci elektroniki Polska",
-    "montaż elektroniki",
-    "montaż SMD",
-    "montaż THT",
-    "montaż PCB",
-    "produkcja elektroniki",
-    "kontraktowa produkcja elektroniki",
-  ],
   alternates: {
-    canonical: "https://polskiems.pl/producenci",
+    canonical: absoluteUrl("/producenci"),
   },
   openGraph: {
     title: "Firmy EMS i producenci elektroniki w Polsce",
     description:
       "Porównaj producentów elektroniki i firmy EMS według usług, lokalizacji oraz skali produkcji.",
-    url: "https://polskiems.pl/producenci",
+    url: absoluteUrl("/producenci"),
     siteName: "PolskiEMS",
     locale: "pl_PL",
     type: "website",
