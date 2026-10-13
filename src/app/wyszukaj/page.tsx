@@ -4,9 +4,16 @@ import PageViewTracker from "../components/PageViewTracker";
 import { getPublicSupplierSearchOptions } from "@/lib/publicSupplierTaxonomyActions";
 import styles from "./styles.module.css";
 import { absoluteUrl } from "@/lib/site";
+import { unstable_cache } from "next/cache";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 export const maxDuration = 30;
+
+const getCachedSearchOptions = unstable_cache(
+  () => getPublicSupplierSearchOptions(),
+  ["public-supplier-search-options"],
+  { revalidate: 3600 }
+);
 
 export const metadata: Metadata = {
   title: "Wyszukaj producenta elektroniki w Polsce",
@@ -26,7 +33,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Wyszukaj() {
-  const options = await getPublicSupplierSearchOptions();
+  const options = await getCachedSearchOptions();
 
   return (
     <main className={styles.page}>
