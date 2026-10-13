@@ -13,5 +13,5 @@ export const metadata: Metadata = {
 };
 
 export default function KontraktowyMontazElektronikiPage() {
-  return <SeoPageTemplateB data={pageData} />;
+  return <SeoPageTemplateB data={pageData} breadcrumbPath="/kontraktowy-montaz-elektroniki" />;
 }
