@@ -1,27 +1,32 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PackageCheckout from "../cennik/PackageCheckout";
-import { getAllProdukcjaScales, getAllRegion } from "@/lib/actions";
 import { getPublicSupplierSearchOptions } from "@/lib/publicSupplierTaxonomyActions";
 import styles from "./styles.module.css";
+import { unstable_cache } from "next/cache";
+import { absoluteUrl } from "@/lib/site";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
+
+const getCachedSignupOptions = unstable_cache(
+  () => getPublicSupplierSearchOptions(),
+  ["producer-signup-options"],
+  { revalidate: 3600 }
+);
 
 export const metadata: Metadata = {
   title: "Dodaj firmę do katalogu | PolskiEMS",
   description:
     "Zgłoś firmę do katalogu PolskiEMS. Uzupełnij dane, typ firmy, usługi, możliwości technologiczne, branże, certyfikaty i skalę produkcji.",
   alternates: {
-    canonical: "https://polskiems.pl/dodaj-producenta",
+    canonical: absoluteUrl("/dodaj-producenta"),
   },
 };
 
 export default async function DodajProducentaPage() {
-  const [taxonomy, produkcja, regions] = await Promise.all([
-    getPublicSupplierSearchOptions(),
-    getAllProdukcjaScales(),
-    getAllRegion(),
-  ]);
+  const taxonomy = await getCachedSignupOptions();
+  const produkcja = taxonomy.productionScales;
+  const regions = taxonomy.regions;
 
   return (
     <div className={styles.page}>
