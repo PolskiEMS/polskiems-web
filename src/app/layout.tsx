@@ -4,6 +4,7 @@ import Footer from "./components/Footer/Footer";
 import Navbar from "./components/Navbar/Navbar";
 import "./globals.css";
 import styles from "./layout.module.css";
+import { SITE_URL } from "@/lib/site";
 
 const geistSans = localFont({
   src: [
@@ -27,40 +28,21 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://polskiems.pl"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "PolskiEMS | Wyszukiwarka producentów elektroniki i firm EMS w Polsce",
+    default: "PolskiEMS: firmy EMS i producenci elektroniki",
     template: "%s | PolskiEMS",
   },
   description:
     "Znajdź producentów elektroniki, firmy EMS, montaż SMD, THT, PCB i kontraktową produkcję elektroniki w Polsce.",
-  keywords: [
-    "PolskiEMS",
-    "EMS Polska",
-    "firmy EMS",
-    "katalog firm EMS",
-    "producent elektroniki",
-    "producenci elektroniki Polska",
-    "produkcja elektroniki Polska",
-    "kontraktowa produkcja elektroniki",
-    "montaż elektroniki",
-    "montaż SMD",
-    "montaż SMT",
-    "montaż THT",
-    "produkcja PCB",
-    "montaż PCB",
-    "dostawcy EMS",
-    "outsourcing produkcji elektroniki",
-    "wyszukiwarka producentów elektroniki",
-  ],
   alternates: {
-    canonical: "https://polskiems.pl",
+    canonical: SITE_URL,
   },
   openGraph: {
-    title: "PolskiEMS | Wyszukiwarka producentów elektroniki i firm EMS w Polsce",
+    title: "PolskiEMS: firmy EMS i producenci elektroniki",
     description:
       "Znajdź idealnego partnera do produkcji elektroniki w Polsce. Intuicyjna wyszukiwarka producentów PCB i EMS.",
-    url: "https://polskiems.pl",
+    url: SITE_URL,
     siteName: "PolskiEMS",
     images: [
       {
