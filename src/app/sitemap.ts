@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
+import { unstable_cache } from "next/cache";
 import { eq } from "drizzle-orm";
 import { producenci } from "@/db/schema";
 import { getDb } from "@/lib/db";
 import { companyProfileSlug } from "@/lib/companySlug";
 import { SITE_URL } from "@/lib/site";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 const staticRoutes: Array<{
   path: string;
@@ -35,6 +36,22 @@ const staticRoutes: Array<{
   { path: "/aktywacja_pakietu", changeFrequency: "monthly", priority: 0.5 },
 ];
 
+const getCachedActiveCompaniesForSitemap = unstable_cache(
+  async () => {
+    const db = getDb();
+    return db
+      .select({
+        id: producenci.id,
+        nazwa: producenci.nazwa,
+        createdAt: producenci.createdAt,
+      })
+      .from(producenci)
+      .where(eq(producenci.isActive, true));
+  },
+  ["sitemap-active-producers"],
+  { revalidate: 3600 }
+);
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticEntries: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
     url: `${SITE_URL}${route.path}`,
@@ -43,15 +60,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   try {
-    const db = getDb();
-    const companies = await db
-      .select({
-        id: producenci.id,
-        nazwa: producenci.nazwa,
-        createdAt: producenci.createdAt,
-      })
-      .from(producenci)
-      .where(eq(producenci.isActive, true));
+    const companies = await getCachedActiveCompaniesForSitemap();
 
     const companyEntries: MetadataRoute.Sitemap = companies.map((company) => ({
       url: `${SITE_URL}/producenci/${companyProfileSlug(company.nazwa, company.id)}`,
