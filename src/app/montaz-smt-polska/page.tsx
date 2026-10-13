@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import ServiceLandingPage from "../components/SeoPages/ServiceLandingPage";
+import { absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Montaż SMT w Polsce | Firmy EMS | PolskiEMS",
   description:
     "Znajdź firmy realizujące montaż SMT w Polsce. Porównaj partnerów EMS pod kątem jakości, terminów i dopasowania do skali Twojego projektu.",
   alternates: {
-    canonical: "https://polskiems.pl/montaz-smt-polska",
+    canonical: absoluteUrl("/montaz-smt-polska"),
   },
 };
 
