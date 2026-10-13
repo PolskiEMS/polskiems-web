@@ -7,7 +7,7 @@ import styles from "./styles.module.css";
 import { unstable_cache } from "next/cache";
 import { absoluteUrl } from "@/lib/site";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 const getCachedSignupOptions = unstable_cache(
   () => getPublicSupplierSearchOptions(),
