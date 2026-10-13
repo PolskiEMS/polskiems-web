@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import ServiceLandingPage from "../components/SeoPages/ServiceLandingPage";
+import { absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "EMS w Polsce | Firmy produkcji elektroniki kontraktowej | PolskiEMS",
   description:
     "Szukasz firmy EMS w Polsce? Porównaj producentów elektroniki kontraktowej, ich usługi montażu SMT/THT, testy i możliwości skalowania produkcji.",
   alternates: {
-    canonical: "https://polskiems.pl/ems-polska",
+    canonical: absoluteUrl("/ems-polska"),
   },
 };
 
