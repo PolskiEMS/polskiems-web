@@ -13,5 +13,5 @@ export const metadata: Metadata = {
 };
 
 export default function MontazElektronikiPolskaPage() {
-  return <SeoPageTemplateB data={pageData} />;
+  return <SeoPageTemplateB data={pageData} breadcrumbPath="/montaz-elektroniki-w-polsce" />;
 }
