@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 export default function EmsPolskaPage() {
   return (
     <ServiceLandingPage
+      breadcrumbPath="/ems-polska"
       title="EMS w Polsce"
       lead="PolskiEMS pomaga szybko znaleźć i porównać firmy EMS działające w Polsce. Sprawdź partnerów do produkcji kontraktowej elektroniki: od prototypowania i wdrożeń NPI po stabilną produkcję seryjną."
       searchHref="/producenci"
