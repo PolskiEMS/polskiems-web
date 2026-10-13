@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./service-landing.module.css";
+import BreadcrumbJsonLd from "./BreadcrumbJsonLd";
 
 type Section = {
   heading: string;
@@ -9,6 +10,7 @@ type Section = {
 
 type Card = {
   title: string;
+  breadcrumbPath: string;
   text: string;
 };
 
@@ -26,6 +28,7 @@ type Props = {
 
 export default function ServiceLandingPage({
   title,
+  breadcrumbPath,
   lead,
   searchHref,
   heroImage,
@@ -34,6 +37,13 @@ export default function ServiceLandingPage({
 }: Props) {
   return (
     <main className={styles.page}>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "PolskiEMS", path: "/" },
+          { name: "Usługi EMS", path: "/ems-polska" },
+          { name: title, path: breadcrumbPath },
+        ]}
+      />
       <section className={styles.hero}>
         <div className={styles.heroContent}>
           <p className={styles.eyebrow}>Baza wiedzy PolskiEMS</p>
