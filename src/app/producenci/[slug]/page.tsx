@@ -6,6 +6,7 @@ import { getPublicCompanyProfileBySlug } from "@/lib/actions";
 import { companyProfileSlug } from "@/lib/companySlug";
 import { getPublicCompanyTaxonomy } from "@/lib/publicSupplierTaxonomyActions";
 import styles from "./style.module.css";
+import { absoluteUrl, serializeJsonLd } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -28,13 +29,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!company) return {};
 
   const canonicalPath = `/producenci/${companyProfileSlug(company.nazwa, company.id)}`;
+  const serviceNames = company.dzialania.slice(0, 3).map((item) => item.nazwa);
+  const regionSuffix = company.wojewodztwo ? `, ${company.wojewodztwo}` : "";
+  const serviceSuffix = serviceNames.length > 0 ? ` – ${serviceNames.join(", ")}` : " – producent elektroniki";
+  const descriptionParts = [
+    `${company.nazwa}${regionSuffix}.`,
+    serviceNames.length > 0 ? `Usługi: ${serviceNames.join(", ")}.` : "Profil producenta elektroniki w katalogu PolskiEMS.",
+    "Sprawdź profil firmy i wyślij zapytanie ofertowe.",
+  ];
+
   return {
-    title: company.nazwa,
-    description: `Profil firmy ${company.nazwa} w katalogu producentów elektroniki i firm EMS PolskiEMS.`,
+    title: `${company.nazwa}${serviceSuffix}${regionSuffix}`,
+    description: descriptionParts.join(" "),
     alternates: { canonical: canonicalPath },
     openGraph: {
-      title: `${company.nazwa} | PolskiEMS`,
-      description: `Profil firmy ${company.nazwa} w katalogu producentów elektroniki i firm EMS PolskiEMS.`,
+      title: `${company.nazwa}${serviceSuffix}${regionSuffix}`,
+      description: descriptionParts.join(" "),
       url: canonicalPath,
       type: "website",
     },
@@ -102,8 +112,62 @@ export default async function ProducerProfilePage({ params }: PageProps) {
       : `https://${company.www}`
     : null;
 
+  const profilePath = `/producenci/${canonicalSlug}`;
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: company.nazwa,
+    url: absoluteUrl(profilePath),
+    ...(websiteHref ? { sameAs: [websiteHref] } : {}),
+    ...(company.email?.trim() ? { email: company.email.trim() } : {}),
+    ...(company.telefon?.trim() ? { telephone: company.telefon.trim() } : {}),
+    ...(company.adres?.trim() || company.wojewodztwo
+      ? {
+          address: {
+            "@type": "PostalAddress",
+            ...(company.adres?.trim() ? { streetAddress: company.adres.trim() } : {}),
+            ...(company.wojewodztwo ? { addressRegion: company.wojewodztwo } : {}),
+            addressCountry: "PL",
+          },
+        }
+      : {}),
+    areaServed: "Polska",
+    knowsAbout: [
+      ...displayedServices.map((item) => item.name ?? item.nazwa ?? item.zakres).filter(Boolean),
+      ...taxonomy.capabilities.map((item) => item.name).filter(Boolean),
+      ...taxonomy.industries.map((item) => item.name).filter(Boolean),
+    ],
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "PolskiEMS",
+        item: absoluteUrl("/"),
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Producenci",
+        item: absoluteUrl("/wszyscy-producenci"),
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: company.nazwa,
+        item: absoluteUrl(profilePath),
+      },
+    ],
+  };
+
   return (
     <main className={styles.page}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(organizationSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }} />
       <section className={styles.hero}>
         <Link href="/wszyscy-producenci" className={styles.backLink}>← Powrót do producentów</Link>
         <div className={styles.heroContent}>
