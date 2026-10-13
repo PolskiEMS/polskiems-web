@@ -16,7 +16,7 @@ const getCachedAllProducers = unstable_cache(
 );
 
 export const metadata: Metadata = {
-  title: "Wszyscy producenci elektroniki w Polsce | Baza firm EMS | PolskiEMS",
+  title: "Producenci elektroniki i firmy EMS w Polsce",
   description:
     "Przeglądaj pełną bazę producentów elektroniki i firm EMS w Polsce. Porównaj profile dostawców bez filtrowania i znajdź partnera do projektu.",
   openGraph: {
