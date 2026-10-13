@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "../seo-page.module.css";
+import { absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "EMS mazowieckie | Firmy montażu elektroniki | PolskiEMS",
+  title: "Firmy EMS w województwie mazowieckim",
   description: "Szukasz partnera EMS w województwie mazowieckim? Sprawdź firmy z regionu mazowieckiego oferujące montaż elektroniki, SMT, THT i produkcję kontraktową.",
+  alternates: { canonical: absoluteUrl("/ems-mazowieckie") },
 };
 
 export default function Page() {
