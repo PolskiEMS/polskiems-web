@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "../seo-page.module.css";
+import { absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "EMS dolnośląskie | Firmy montażu elektroniki | PolskiEMS",
+  title: "Firmy EMS w województwie dolnośląskim",
   description: "Poznaj firmy EMS z województwa dolnośląskiego. Znajdź producentów do prototypów, małych serii i produkcji elektroniki.",
+  alternates: { canonical: absoluteUrl("/ems-dolnoslaskie") },
 };
 
 export default function Page() {
