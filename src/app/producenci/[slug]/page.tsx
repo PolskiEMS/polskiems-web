@@ -133,7 +133,7 @@ export default async function ProducerProfilePage({ params }: PageProps) {
       : {}),
     areaServed: "Polska",
     knowsAbout: [
-      ...displayedServices.map((item) => item.name ?? item.nazwa ?? item.zakres).filter(Boolean),
+      ...displayedServices.map((item) => ("name" in item ? item.name : item.nazwa)).filter(Boolean),
       ...taxonomy.capabilities.map((item) => item.name).filter(Boolean),
       ...taxonomy.industries.map((item) => item.name).filter(Boolean),
     ],
