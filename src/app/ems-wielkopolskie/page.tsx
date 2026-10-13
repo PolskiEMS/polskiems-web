@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "../seo-page.module.css";
 import { absoluteUrl } from "@/lib/site";
+import BreadcrumbJsonLd from "../components/SeoPages/BreadcrumbJsonLd";
 
 export const metadata: Metadata = {
   title: "Firmy EMS w województwie wielkopolskim",
@@ -12,6 +13,13 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <div className={styles.page}>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "PolskiEMS", path: "/" },
+          { name: "EMS Polska", path: "/ems-polska" },
+          { name: "Firmy EMS w województwie wielkopolskim", path: "/ems-wielkopolskie" },
+        ]}
+      />
       <section className={styles.hero}>
         <h1>Firmy EMS w województwie wielkopolskim</h1>
         <p>
