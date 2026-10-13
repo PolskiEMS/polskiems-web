@@ -1,3 +1,4 @@
+import { cache } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
@@ -15,6 +16,8 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
+const getCachedPublicCompanyProfileBySlug = cache(getPublicCompanyProfileBySlug);
+
 type TagItem = {
   id: number;
   name?: string;
@@ -24,7 +27,7 @@ type TagItem = {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const company = await getPublicCompanyProfileBySlug(slug);
+  const company = await getCachedPublicCompanyProfileBySlug(slug);
 
   if (!company) return {};
 
@@ -97,7 +100,7 @@ export default async function ProducerProfilePage({ params }: PageProps) {
     );
   }
 
-  const company = await getPublicCompanyProfileBySlug(slug);
+  const company = await getCachedPublicCompanyProfileBySlug(slug);
   if (!company) notFound();
 
   const canonicalSlug = companyProfileSlug(company.nazwa, company.id);
