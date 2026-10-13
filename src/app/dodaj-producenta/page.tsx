@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import PackageCheckout from "../cennik/PackageCheckout";
 import { getPublicSupplierSearchOptions } from "@/lib/publicSupplierTaxonomyActions";
 import styles from "./styles.module.css";
@@ -63,17 +64,19 @@ export default async function DodajProducentaPage() {
       </section>
 
       <div id="formularz" className={styles.formAnchor}>
-        <PackageCheckout
-          initialPackage="free"
-          regions={regions}
-          produkcja={produkcja}
-          companyTypes={taxonomy.companyTypes}
-          services={taxonomy.services}
-          capabilities={taxonomy.capabilities}
-          industries={taxonomy.industries}
-          certifications={taxonomy.certifications}
-          producerSignupMode
-        />
+        <Suspense fallback={<p>Ładowanie formularza zgłoszenia…</p>}>
+          <PackageCheckout
+            initialPackage="free"
+            regions={regions}
+            produkcja={produkcja}
+            companyTypes={taxonomy.companyTypes}
+            services={taxonomy.services}
+            capabilities={taxonomy.capabilities}
+            industries={taxonomy.industries}
+            certifications={taxonomy.certifications}
+            producerSignupMode
+          />
+        </Suspense>
       </div>
     </div>
   );
