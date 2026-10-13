@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import ServiceLandingPage from "../components/SeoPages/ServiceLandingPage";
+import { absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Produkcja PCB w Polsce | Producenci EMS | PolskiEMS",
   description:
     "Porównaj firmy oferujące produkcję PCB w Polsce. Sprawdź dostawców EMS, ich możliwości technologiczne i wybierz partnera do prototypów lub serii.",
   alternates: {
-    canonical: "https://polskiems.pl/produkcja-pcb-polska",
+    canonical: absoluteUrl("/produkcja-pcb-polska"),
   },
 };
 
