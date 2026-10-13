@@ -6,6 +6,8 @@ import "./globals.css";
 import styles from "./layout.module.css";
 import { SITE_URL } from "@/lib/site";
 
+export const preferredRegion = "fra1";
+
 const geistSans = localFont({
   src: [
     {
