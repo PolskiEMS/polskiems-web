@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "../seo-page.module.css";
+import { absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "EMS śląskie | Firmy montażu elektroniki | PolskiEMS",
+  title: "Firmy EMS w województwie śląskim",
   description: "Przegląd firm EMS z województwa śląskiego. Wyszukaj partnerów do montażu elektroniki, SMT, THT i usług produkcyjnych.",
+  alternates: { canonical: absoluteUrl("/ems-slaskie") },
 };
 
 export default function Page() {
