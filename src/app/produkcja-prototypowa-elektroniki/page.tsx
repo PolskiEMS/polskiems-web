@@ -13,5 +13,5 @@ export const metadata: Metadata = {
 };
 
 export default function ProdukcjaPrototypowaElektronikiPage() {
-  return <SeoPageTemplateB data={pageData} />;
+  return <SeoPageTemplateB data={pageData} breadcrumbPath="/produkcja-prototypowa-elektroniki" />;
 }
