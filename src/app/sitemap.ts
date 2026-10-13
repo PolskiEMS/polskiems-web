@@ -55,7 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     const companyEntries: MetadataRoute.Sitemap = companies.map((company) => ({
       url: `${SITE_URL}/producenci/${companyProfileSlug(company.nazwa, company.id)}`,
-      lastModified: company.createdAt ?? undefined,
+      lastModified: company.createdAt ? new Date(company.createdAt) : undefined,
       changeFrequency: "monthly",
       priority: 0.7,
     }));
