@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "../seo-page.module.css";
+import { absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "EMS wielkopolskie | Firmy montażu elektroniki | PolskiEMS",
+  title: "Firmy EMS w województwie wielkopolskim",
   description: "Szukasz firmy EMS w Wielkopolsce? Porównaj producentów elektroniki realizujących montaż SMT, THT i projekty kontraktowe.",
+  alternates: { canonical: absoluteUrl("/ems-wielkopolskie") },
 };
 
 export default function Page() {
