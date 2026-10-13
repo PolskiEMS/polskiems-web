@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 export default function ProdukcjapcbpolskaPage() {
   return (
     <ServiceLandingPage
+      breadcrumbPath="/produkcja-pcb-polska"
       title="Produkcja PCB w Polsce"
       lead="Produkcja płytek drukowanych PCB to kluczowy etap każdego projektu elektronicznego. Na tej stronie znajdziesz firmy, które dostarczają PCB i wspierają pełny proces wdrożenia – od prototypowania po produkcję seryjną oraz integrację z montażem EMS."
       searchHref="/producenci?requirements=Dostarcza%20PCB"
