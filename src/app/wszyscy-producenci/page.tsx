@@ -6,27 +6,22 @@ import AllProducers from '../components/AllProducers/AllProducers';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import PageViewTracker from '../components/PageViewTracker';
+import { absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Wszyscy producenci elektroniki w Polsce | Baza firm EMS | PolskiEMS",
   description:
     "Przeglądaj pełną bazę producentów elektroniki i firm EMS w Polsce. Porównaj profile dostawców bez filtrowania i znajdź partnera do projektu.",
-  keywords: [
-    "lista producentów elektroniki",
-    "pełna baza EMS",
-    "PCB producenci Polska",
-    "wszyscy producenci elektroniki"
-  ],
   openGraph: {
     title: "Wszyscy Producenci Elektroniki",
     description: "Zobacz wszystkich producentów elektroniki w bazie bez żadnych filtrów.",
-    url: "https://polskiems.pl/wszyscy-producenci",
+    url: absoluteUrl("/wszyscy-producenci"),
     siteName: "Wyszukiwarka Producentów",
     locale: "pl_PL",
     type: "website"
   },
   alternates: {
-    canonical: "https://polskiems.pl/wszyscy-producenci",
+    canonical: absoluteUrl("/wszyscy-producenci"),
   },
 };
 
