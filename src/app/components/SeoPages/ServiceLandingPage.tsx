@@ -10,12 +10,12 @@ type Section = {
 
 type Card = {
   title: string;
-  breadcrumbPath: string;
   text: string;
 };
 
 type Props = {
   title: string;
+  breadcrumbPath: string;
   lead: string;
   searchHref: string;
   heroImage: {
