@@ -10,10 +10,12 @@ import {
   wojewodztwa,
 } from "@/db/schema";
 import { getDb } from "@/lib/db";
+import { unstable_cache } from "next/cache";
 import { sendInquiryAction } from "@/lib/rfqActions";
 import styles from "./style.module.css";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 30;
 
 type PageProps = {
   searchParams: Promise<{
@@ -43,6 +45,61 @@ function getErrorCopy(error?: string) {
 }
 
 type Option = { id: number; label: string; value: string };
+
+type InquiryFormData = {
+  activeCompanies: Array<{ id: number; nazwa: string }>;
+  serviceOptions: Option[];
+  capabilityOptions: Option[];
+  industryOptions: Option[];
+  certificationOptions: Option[];
+  productionOptions: Option[];
+  regionOptions: Option[];
+};
+
+const getCachedInquiryFormData = unstable_cache(
+  async (): Promise<InquiryFormData> => {
+    const db = getDb();
+    const [
+      companiesRows,
+      servicesRows,
+      capabilitiesRows,
+      industriesRows,
+      certificationsRows,
+      productionRows,
+      regionsRows,
+    ] = await Promise.all([
+      db
+        .select({ id: producenci.id, nazwa: producenci.nazwa })
+        .from(producenci)
+        .where(and(eq(producenci.isActive, true), sql\`TRIM(\${producenci.email}) <> ''\`))
+        .orderBy(asc(producenci.nazwa)),
+      db.select({ id: services.id, slug: services.slug, name: services.name }).from(services)
+        .where(eq(services.isActive, true)).orderBy(asc(services.sortOrder), asc(services.name)),
+      db.select({ id: capabilities.id, slug: capabilities.slug, name: capabilities.name }).from(capabilities)
+        .where(eq(capabilities.isActive, true)).orderBy(asc(capabilities.sortOrder), asc(capabilities.name)),
+      db.select({ id: industries.id, slug: industries.slug, name: industries.name }).from(industries)
+        .where(eq(industries.isActive, true)).orderBy(asc(industries.sortOrder), asc(industries.name)),
+      db.select({ id: certifications.id, code: certifications.code, name: certifications.name }).from(certifications)
+        .where(eq(certifications.isActive, true)).orderBy(asc(certifications.sortOrder), asc(certifications.name)),
+      db.select({ id: produkcja.id, zakres: produkcja.zakres }).from(produkcja)
+        .orderBy(asc(produkcja.sortOrder), asc(produkcja.zakres)),
+      db.select({ id: wojewodztwa.id, nazwa: wojewodztwa.nazwa }).from(wojewodztwa)
+        .orderBy(asc(wojewodztwa.nazwa)),
+    ]);
+
+    return {
+      activeCompanies: companiesRows,
+      serviceOptions: servicesRows.map((item) => ({ id: item.id, value: item.slug, label: item.name })),
+      capabilityOptions: capabilitiesRows.map((item) => ({ id: item.id, value: item.slug, label: item.name })),
+      industryOptions: industriesRows.map((item) => ({ id: item.id, value: item.slug, label: item.name })),
+      certificationOptions: certificationsRows.map((item) => ({ id: item.id, value: item.code, label: item.name })),
+      productionOptions: productionRows.map((item) => ({ id: item.id, value: String(item.id), label: item.zakres })),
+      regionOptions: regionsRows.map((item) => ({ id: item.id, value: String(item.id), label: item.nazwa })),
+    };
+  },
+  ["rfq-form-data"],
+  { revalidate: 3600 }
+);
 
 function CheckboxGroup({
   title,
@@ -79,7 +136,7 @@ export default async function InquiryPage({ searchParams }: PageProps) {
   const errorCopy = getErrorCopy(params.error);
 
   let databaseUnavailable = false;
-  let activeCompanies: Array<{ id: number; nazwa: string }> = [];
+  let activeCompanies: InquiryFormData["activeCompanies"] = [];
   let serviceOptions: Option[] = [];
   let capabilityOptions: Option[] = [];
   let industryOptions: Option[] = [];
@@ -88,61 +145,19 @@ export default async function InquiryPage({ searchParams }: PageProps) {
   let regionOptions: Option[] = [];
 
   try {
-    const db = getDb();
-    const [
-      companiesRows,
-      servicesRows,
-      capabilitiesRows,
-      industriesRows,
-      certificationsRows,
-      productionRows,
-      regionsRows,
-    ] = await Promise.all([
-      db
-        .select({ id: producenci.id, nazwa: producenci.nazwa })
-        .from(producenci)
-        .where(and(eq(producenci.isActive, true), sql`TRIM(${producenci.email}) <> ''`))
-        .orderBy(asc(producenci.nazwa)),
-      db
-        .select({ id: services.id, slug: services.slug, name: services.name })
-        .from(services)
-        .where(eq(services.isActive, true))
-        .orderBy(asc(services.sortOrder), asc(services.name)),
-      db
-        .select({ id: capabilities.id, slug: capabilities.slug, name: capabilities.name })
-        .from(capabilities)
-        .where(eq(capabilities.isActive, true))
-        .orderBy(asc(capabilities.sortOrder), asc(capabilities.name)),
-      db
-        .select({ id: industries.id, slug: industries.slug, name: industries.name })
-        .from(industries)
-        .where(eq(industries.isActive, true))
-        .orderBy(asc(industries.sortOrder), asc(industries.name)),
-      db
-        .select({ id: certifications.id, code: certifications.code, name: certifications.name })
-        .from(certifications)
-        .where(eq(certifications.isActive, true))
-        .orderBy(asc(certifications.sortOrder), asc(certifications.name)),
-      db
-        .select({ id: produkcja.id, zakres: produkcja.zakres })
-        .from(produkcja)
-        .orderBy(asc(produkcja.sortOrder), asc(produkcja.zakres)),
-      db
-        .select({ id: wojewodztwa.id, nazwa: wojewodztwa.nazwa })
-        .from(wojewodztwa)
-        .orderBy(asc(wojewodztwa.nazwa)),
-    ]);
-
-    activeCompanies = companiesRows;
-    serviceOptions = servicesRows.map((item) => ({ id: item.id, value: item.slug, label: item.name }));
-    capabilityOptions = capabilitiesRows.map((item) => ({ id: item.id, value: item.slug, label: item.name }));
-    industryOptions = industriesRows.map((item) => ({ id: item.id, value: item.slug, label: item.name }));
-    certificationOptions = certificationsRows.map((item) => ({ id: item.id, value: item.code, label: item.name }));
-    productionOptions = productionRows.map((item) => ({ id: item.id, value: String(item.id), label: item.zakres }));
-    regionOptions = regionsRows.map((item) => ({ id: item.id, value: String(item.id), label: item.nazwa }));
-  } catch {
+    const formData = await getCachedInquiryFormData();
+    ({
+      activeCompanies,
+      serviceOptions,
+      capabilityOptions,
+      industryOptions,
+      certificationOptions,
+      productionOptions,
+      regionOptions,
+    } = formData);
+  } catch (error) {
     databaseUnavailable = true;
-    console.error("Inquiry taxonomy query failed");
+    console.error("Inquiry form data unavailable", error);
   }
 
   const selectedCompany =
@@ -166,7 +181,7 @@ export default async function InquiryPage({ searchParams }: PageProps) {
 
         {databaseUnavailable && (
           <div role="alert" className={styles.errorBox}>
-            Dane formularza są chwilowo niedostępne. Odśwież stronę za chwilę.
+            Nie udało się teraz połączyć z bazą producentów. Formularz nie może zostać wysłany, dopóki połączenie nie zostanie przywrócone. Spróbuj ponownie za chwilę.
           </div>
         )}
 
