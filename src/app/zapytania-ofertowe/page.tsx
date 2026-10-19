@@ -71,7 +71,7 @@ const getCachedInquiryFormData = unstable_cache(
       db
         .select({ id: producenci.id, nazwa: producenci.nazwa })
         .from(producenci)
-        .where(and(eq(producenci.isActive, true), sql\`TRIM(\${producenci.email}) <> ''\`))
+        .where(and(eq(producenci.isActive, true), sql`TRIM(${producenci.email}) <> ''`))
         .orderBy(asc(producenci.nazwa)),
       db.select({ id: services.id, slug: services.slug, name: services.name }).from(services)
         .where(eq(services.isActive, true)).orderBy(asc(services.sortOrder), asc(services.name)),
