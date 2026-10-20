@@ -107,9 +107,18 @@ export default function Navbar() {
             <span className={styles.brandText}>PolskiEMS</span>
           </button>
 
-          <Link href="/wyszukaj" className={styles.topCta}>
-            Znajdź producenta
-          </Link>
+          <div className={styles.headerRight}>
+            <nav className={styles.topLinks} aria-label="Główna nawigacja">
+              <Link href="/o-nas">O nas</Link>
+              <Link href="/kontakt">Kontakt</Link>
+              <Link href="/regulamin">Regulamin</Link>
+              <Link href="/cennik">Cennik</Link>
+            </nav>
+
+            <Link href="/wyszukaj" className={styles.topCta}>
+              Znajdź producenta
+            </Link>
+          </div>
         </div>
       </header>
 
