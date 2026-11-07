@@ -9,7 +9,7 @@ import { getPublicCompanyTaxonomy } from "@/lib/publicSupplierTaxonomyActions";
 import styles from "./style.module.css";
 import { absoluteUrl, serializeJsonLd } from "@/lib/site";
 
-export const revalidate = 900;
+export const dynamic = "force-dynamic";
 export const maxDuration = 30;
 
 type PageProps = {
