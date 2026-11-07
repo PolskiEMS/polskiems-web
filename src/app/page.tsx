@@ -7,7 +7,7 @@ import ProducerCard from "@/app/components/ProducerCard/ProducerCard";
 import { unstable_cache } from "next/cache";
 import { SITE_URL, absoluteUrl, serializeJsonLd } from "@/lib/site";
 
-export const revalidate = 900;
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Firmy EMS i producenci elektroniki w Polsce",
