@@ -6,7 +6,7 @@ import styles from "./styles.module.css";
 import { absoluteUrl } from "@/lib/site";
 import { unstable_cache } from "next/cache";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 export const maxDuration = 30;
 
 const getCachedSearchOptions = unstable_cache(
