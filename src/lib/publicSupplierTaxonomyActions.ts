@@ -70,36 +70,42 @@ function normalizeCompanyTypes(values: string[] | undefined) {
 export async function getPublicSupplierSearchOptions(): Promise<PublicSupplierSearchOptions> {
   const db = getDb();
 
-  const [regionRows, serviceRows, capabilityRows, industryRows, certificationRows, productionRows] = await Promise.all([
-    db
-      .select({ id: wojewodztwa.id, nazwa: wojewodztwa.nazwa })
-      .from(wojewodztwa)
-      .orderBy(asc(wojewodztwa.nazwa)),
-    db
-      .select({ id: services.id, slug: services.slug, name: services.name })
-      .from(services)
-      .where(eq(services.isActive, true))
-      .orderBy(sql`COALESCE(${services.sortOrder}, 999999)`, asc(services.name)),
-    db
-      .select({ id: capabilities.id, slug: capabilities.slug, name: capabilities.name })
-      .from(capabilities)
-      .where(eq(capabilities.isActive, true))
-      .orderBy(sql`COALESCE(${capabilities.sortOrder}, 999999)`, asc(capabilities.name)),
-    db
-      .select({ id: industries.id, slug: industries.slug, name: industries.name })
-      .from(industries)
-      .where(eq(industries.isActive, true))
-      .orderBy(sql`COALESCE(${industries.sortOrder}, 999999)`, asc(industries.name)),
-    db
-      .select({ id: certifications.id, code: certifications.code, name: certifications.name })
-      .from(certifications)
-      .where(eq(certifications.isActive, true))
-      .orderBy(sql`COALESCE(${certifications.sortOrder}, 999999)`, asc(certifications.code)),
-    db
-      .select({ id: produkcja.id, zakres: produkcja.zakres })
-      .from(produkcja)
-      .orderBy(sql`COALESCE(${produkcja.sortOrder}, 999999)`, asc(produkcja.zakres)),
-  ]);
+  // Keep lookup reads sequential. The DB client is intentionally configured with a
+  // very small connection pool on Vercel, so firing all six queries at once only
+  // creates queueing pressure without making this small lookup faster.
+  const regionRows = await db
+    .select({ id: wojewodztwa.id, nazwa: wojewodztwa.nazwa })
+    .from(wojewodztwa)
+    .orderBy(asc(wojewodztwa.nazwa));
+
+  const serviceRows = await db
+    .select({ id: services.id, slug: services.slug, name: services.name })
+    .from(services)
+    .where(eq(services.isActive, true))
+    .orderBy(sql`COALESCE(${services.sortOrder}, 999999)`, asc(services.name));
+
+  const capabilityRows = await db
+    .select({ id: capabilities.id, slug: capabilities.slug, name: capabilities.name })
+    .from(capabilities)
+    .where(eq(capabilities.isActive, true))
+    .orderBy(sql`COALESCE(${capabilities.sortOrder}, 999999)`, asc(capabilities.name));
+
+  const industryRows = await db
+    .select({ id: industries.id, slug: industries.slug, name: industries.name })
+    .from(industries)
+    .where(eq(industries.isActive, true))
+    .orderBy(sql`COALESCE(${industries.sortOrder}, 999999)`, asc(industries.name));
+
+  const certificationRows = await db
+    .select({ id: certifications.id, code: certifications.code, name: certifications.name })
+    .from(certifications)
+    .where(eq(certifications.isActive, true))
+    .orderBy(sql`COALESCE(${certifications.sortOrder}, 999999)`, asc(certifications.code));
+
+  const productionRows = await db
+    .select({ id: produkcja.id, zakres: produkcja.zakres })
+    .from(produkcja)
+    .orderBy(sql`COALESCE(${produkcja.sortOrder}, 999999)`, asc(produkcja.zakres));
 
   return {
     regions: regionRows,
