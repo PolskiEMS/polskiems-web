@@ -34,23 +34,18 @@
 }
 
 .brandMark {
-  width: 38px;
-  height: 38px;
-  border-radius: 13px;
+  width: 42px;
+  height: 42px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  gap: 4px;
-  background: linear-gradient(135deg, #7c3aed, #0ea5e9);
-  box-shadow: 0 12px 28px rgba(14, 165, 233, 0.2);
+  flex: 0 0 42px;
 }
 
-.brandMark span {
-  width: 16px;
-  height: 2px;
-  border-radius: 999px;
-  background: #ffffff;
+.brandLogoImage {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
 }
 
 .brandColumn p {
