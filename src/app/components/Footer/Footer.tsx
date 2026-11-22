@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import styles from "./styles.module.css";
 
@@ -10,9 +11,13 @@ const Footer = () => {
         <section className={styles.brandColumn}>
           <Link href="/" className={styles.brand} aria-label="PolskiEMS — strona główna">
             <span className={styles.brandMark} aria-hidden="true">
-              <span />
-              <span />
-              <span />
+              <Image
+                src="/images/logo.png"
+                alt=""
+                width={42}
+                height={42}
+                className={styles.brandLogoImage}
+              />
             </span>
             <span>PolskiEMS</span>
           </Link>
